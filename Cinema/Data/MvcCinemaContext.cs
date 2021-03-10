@@ -10,10 +10,10 @@ namespace Cinema.Data
         {
         }
 
-        public DbSet<Movie> Movies { get; set; }
-        public DbSet<Hall> Halls{ get; set; }
-        public DbSet<Seat> Seats{ get; set; }
-        public DbSet<Session> Sessions{ get; set; }
-        public DbSet<Reservation> Reservations{ get; set; }
+        public DbSet<Movie> Movie { get; set; }
+        public DbSet<Hall> Hall{ get; set; }
+        public DbSet<Seat> Seat{ get; set; }
+        public DbSet<Session> Session{ get; set; }
+        public DbSet<Reservation> Reservation{ get; set; }
     }
 }
