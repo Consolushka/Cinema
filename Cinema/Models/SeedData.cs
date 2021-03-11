@@ -4,19 +4,30 @@ using Cinema.Data;
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace Cinema.Models
 {
     public class SeedData
     {
+
+        private static List<Movie> moviesList { get; set; }
+
+        private static List<Hall> hallsList { get; set; }
+
+        private static IServiceProvider _servise { get; set; }
+
+        private static ILogger<Program> _logger { get; set; }
+
         public static void Initialize (IServiceProvider serviceProvider)
         {
+            _servise = serviceProvider;
+            _logger = _servise.GetRequiredService<ILogger<Program>>();
             using (var context = new MvcCinemaContext(
                 serviceProvider.GetRequiredService<
                     DbContextOptions<MvcCinemaContext>>()))
             {
-                var entityTypes = context.Model.GetEntityTypes().Select(t => t.ClrType).ToList();
-                // Look for any movies.
                 if (!context.Seat.Any())
                 {
                     var seats = SeedSeats();
@@ -27,10 +38,17 @@ namespace Cinema.Models
                     var halls = SeedHalls();
                     context.Hall.AddRange(halls);
                 }
+                hallsList = context.Hall.ToList();
                 if (!context.Movie.Any())
                 {
                     var movies = SeedMovies();
                     context.Movie.AddRange(movies);
+                }
+                moviesList = context.Movie.ToList();
+                if (!context.Session.Any())
+                {
+                    var session = SeedSessions();
+                    context.Session.AddRange(session);
                 }
                 context.SaveChanges();
         }
@@ -41,13 +59,14 @@ namespace Cinema.Models
             List<Seat> initSeats = new List<Seat>();
             for (int i = 1; i <= 11; i++)
             {
-                Seat currentSeat = new Seat();
-                currentSeat.Row = i;
                 for (int j = 1; j <= 15; j++)
                 {
+                    Seat currentSeat = new Seat();
+                    currentSeat.Row = i;
+                    _logger.LogInformation(j, "seat number");
                     currentSeat.Number = j;
+                    initSeats.Add(currentSeat);
                 }
-                initSeats.Add(currentSeat);
             }
             return initSeats;
         }
@@ -55,7 +74,7 @@ namespace Cinema.Models
         private static List<Hall> SeedHalls()
         {
             List<Hall> initHalls = new List<Hall>();
-            List<string> russianTrans = ["Первый","Второй","Третий","Четвертый"];
+            List<string> russianTrans = new List<string>() { "Первый", "Второй", "Третий", "Четвертый" };
             foreach (string number in russianTrans)
             {
                 Hall hall = new Hall();
@@ -161,7 +180,7 @@ namespace Cinema.Models
                     Director = "Роберт Земекис",
                     Poster = "nazadvbudushee.jpg",
                     Rating = "8.6",
-                    ReleaseDate = DateTime.Parse("1985")
+                    ReleaseDate = DateTime.Parse("1985-01-01")
                 }
             );
             initMovies.Add(
@@ -249,6 +268,33 @@ namespace Cinema.Models
                 }
             );
             return initMovies;
+        }
+
+        private static List<Session> SeedSessions()
+        {
+            List<Session> initSessions = new List<Session>();
+
+            foreach (Hall hall in hallsList)
+            {
+                DateTime currentShowDate = new DateTime(2021, 12, 23, 10, 0, 0);
+                for (int i = 0; i < moviesList.Count * 2; i++)
+                {
+                    int realNumber = i;
+
+                    if (i == moviesList.Count() || i > moviesList.Count())
+                    {
+                        realNumber = i - moviesList.Count();
+                    }
+
+                    Session currentSession = new Session();
+                    currentSession.Movie = moviesList[realNumber];
+                    currentSession.Hall = hall;
+                    currentSession.ShowTime = currentShowDate;
+                    initSessions.Add(currentSession);
+                    currentShowDate = currentShowDate.AddHours(4);
+                }
+            }
+            return initSessions;
         }
     }
 }
