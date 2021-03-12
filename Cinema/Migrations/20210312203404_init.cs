@@ -3,12 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Cinema.Migrations
 {
-    public partial class Init : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Halls",
+                name: "Hall",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -17,11 +17,11 @@ namespace Cinema.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Halls", x => x.Id);
+                    table.PrimaryKey("PK_Hall", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Movies",
+                name: "Movie",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -36,11 +36,11 @@ namespace Cinema.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Movies", x => x.Id);
+                    table.PrimaryKey("PK_Movie", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Seats",
+                name: "Seat",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -50,101 +50,101 @@ namespace Cinema.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Seats", x => x.Id);
+                    table.PrimaryKey("PK_Seat", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Sessions",
+                name: "Session",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    MovieId = table.Column<int>(type: "int", nullable: true),
-                    HallId = table.Column<int>(type: "int", nullable: true),
+                    MovieId = table.Column<int>(type: "int", nullable: false),
+                    HallId = table.Column<int>(type: "int", nullable: false),
                     ShowTime = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Sessions", x => x.Id);
+                    table.PrimaryKey("PK_Session", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Sessions_Halls_HallId",
+                        name: "FK_Session_Hall_HallId",
                         column: x => x.HallId,
-                        principalTable: "Halls",
+                        principalTable: "Hall",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Sessions_Movies_MovieId",
+                        name: "FK_Session_Movie_MovieId",
                         column: x => x.MovieId,
-                        principalTable: "Movies",
+                        principalTable: "Movie",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Reservations",
+                name: "Reservation",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    SessionId = table.Column<int>(type: "int", nullable: true),
-                    SeatId = table.Column<int>(type: "int", nullable: true),
+                    SessionId = table.Column<int>(type: "int", nullable: false),
+                    SeatId = table.Column<int>(type: "int", nullable: false),
                     PersonFirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PersonSecondName = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Reservations", x => x.Id);
+                    table.PrimaryKey("PK_Reservation", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Reservations_Seats_SeatId",
+                        name: "FK_Reservation_Seat_SeatId",
                         column: x => x.SeatId,
-                        principalTable: "Seats",
+                        principalTable: "Seat",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Reservations_Sessions_SessionId",
+                        name: "FK_Reservation_Session_SessionId",
                         column: x => x.SessionId,
-                        principalTable: "Sessions",
+                        principalTable: "Session",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reservations_SeatId",
-                table: "Reservations",
+                name: "IX_Reservation_SeatId",
+                table: "Reservation",
                 column: "SeatId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reservations_SessionId",
-                table: "Reservations",
+                name: "IX_Reservation_SessionId",
+                table: "Reservation",
                 column: "SessionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Sessions_HallId",
-                table: "Sessions",
+                name: "IX_Session_HallId",
+                table: "Session",
                 column: "HallId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Sessions_MovieId",
-                table: "Sessions",
+                name: "IX_Session_MovieId",
+                table: "Session",
                 column: "MovieId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Reservations");
+                name: "Reservation");
 
             migrationBuilder.DropTable(
-                name: "Seats");
+                name: "Seat");
 
             migrationBuilder.DropTable(
-                name: "Sessions");
+                name: "Session");
 
             migrationBuilder.DropTable(
-                name: "Halls");
+                name: "Hall");
 
             migrationBuilder.DropTable(
-                name: "Movies");
+                name: "Movie");
         }
     }
 }

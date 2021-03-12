@@ -63,7 +63,6 @@ namespace Cinema.Models
                 {
                     Seat currentSeat = new Seat();
                     currentSeat.Row = i;
-                    _logger.LogInformation(j, "seat number");
                     currentSeat.Number = j;
                     initSeats.Add(currentSeat);
                 }
@@ -274,6 +273,7 @@ namespace Cinema.Models
         {
             List<Session> initSessions = new List<Session>();
 
+            _logger.LogInformation(hallsList.Count().ToString());
             foreach (Hall hall in hallsList)
             {
                 DateTime currentShowDate = new DateTime(2021, 12, 23, 10, 0, 0);
@@ -287,8 +287,8 @@ namespace Cinema.Models
                     }
 
                     Session currentSession = new Session();
-                    currentSession.Movie = moviesList[realNumber];
-                    currentSession.Hall = hall;
+                    currentSession.MovieId = moviesList[realNumber].Id;
+                    currentSession.HallId = hall.Id;
                     currentSession.ShowTime = currentShowDate;
                     initSessions.Add(currentSession);
                     currentShowDate = currentShowDate.AddHours(4);
