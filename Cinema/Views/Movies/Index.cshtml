@@ -16,7 +16,9 @@
                             @foreach(Session session in ViewBag.Sessions[item.Id])
                             {
                                 <li>
-                                    @session.ShowTime
+                                    <a asp-controller="Session" asp-action="Index" asp-route-id="@session.Id">
+                                        @session.ShowTime
+                                    </a>
                                 </li>
                             }
                         </ul>

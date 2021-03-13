@@ -1,0 +1,18 @@
+﻿<h1>@ViewBag.Movie.Title</h1>
+
+
+
+@foreach (var key in ViewBag.Seats.Keys)
+{
+<ul>
+    <h2>@key</h2>
+    @foreach (var seat in ViewBag.Seats[key])
+    {
+        <li>
+            <p>@seat.Row</p>
+            <p>@seat.Number</p>
+            <p>@seat.IsReserved</p>
+        </li>
+    }
+</ul>
+}
