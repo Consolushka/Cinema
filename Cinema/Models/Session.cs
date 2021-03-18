@@ -9,9 +9,9 @@ namespace Cinema.Models
     public class Session
     {
         public int Id { get; set; }
-        public int MovieId { get; set; }      // внешний ключ
+        public int MovieId { get; set; }
         public Movie Movie{ get; set; }
-        public int HallId{ get; set; }      // внешний ключ
+        public int HallId{ get; set; }
         public Hall Hall{ get; set; }
         public DateTime ShowTime { get; set; }
     }

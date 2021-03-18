@@ -1,18 +1,34 @@
-﻿<h1>@ViewBag.Movie.Title</h1>
+﻿@model Cinema.Models.Session
 
+<h1>@ViewBag.Movie.Title</h1>
 
-
-@foreach (var key in ViewBag.Seats.Keys)
-{
-<ul>
-    <h2>@key</h2>
-    @foreach (var seat in ViewBag.Seats[key])
+<form action="" method="post" id="resForm">
+    <input name="Session" value="@Model.Id" disabled />
+    @foreach (var key in ViewBag.Seats.Keys)
     {
-        <li>
-            <p>@seat.Row</p>
-            <p>@seat.Number</p>
-            <p>@seat.IsReserved</p>
-        </li>
+        <h2>@key</h2>
+        @foreach (SessionSeat seat in ViewBag.Seats[key])
+        {
+            if (seat.IsReserved)
+            {
+                <input type="checkbox" name="seats" value="@seat.Id" disabled />
+            }
+            else
+            {
+                <input class="js-available-seat" type="checkbox" name="seats" value="@seat.Id" data-seatNumber="@seat.Id" />
+            }
+            <span style="font-size: 8px">@seat.Number</span>
+        }
     }
-</ul>
-}
+    <input id="FirstName" type="text" />
+    <input id="SecondName" type="text" />
+    <div style="margin-top:15px">
+        <output name="result"></output>
+    </div>
+    <div class="form-group">
+        <input id="reserv" type="submit" value="Create" class="btn btn-primary" />
+    </div>
+</form>
+
+<script src="~/js/reservation.js"></script>
+

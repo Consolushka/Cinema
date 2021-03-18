@@ -26,7 +26,10 @@ namespace Cinema
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-
+            services.Configure<IISServerOptions>(options =>
+            {
+                options.AllowSynchronousIO = true;
+            });
             services.AddDbContext<MvcCinemaContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("MvcCinemaContext")));
         }

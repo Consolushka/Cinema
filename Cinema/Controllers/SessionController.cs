@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,6 +8,8 @@ using Cinema.Data;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Cinema.Models;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Cinema.Controllers
 {
@@ -15,6 +18,8 @@ namespace Cinema.Controllers
 
         private readonly MvcCinemaContext _context;
 
+        private Session session { get; set; }
+
         public SessionController(MvcCinemaContext context)
         {
             _context = context;
@@ -22,46 +27,64 @@ namespace Cinema.Controllers
 
         public async Task<IActionResult> Index(int id)
         {
-            List<SessionSeat> seatsList = new List<SessionSeat>();
 
-            var session = await _context.Session.FirstOrDefaultAsync(s => s.Id == id);
+            session = await _context.Session.FirstOrDefaultAsync(s => s.Id == id);
 
             if (session == null)
             {
                 return NotFound();
             }
-            
-            foreach(Seat seat in _context.Seat.ToList())
+
+            ViewBag.Movie = _context.Movie.SingleOrDefault(m => m.Id == session.MovieId);
+            ViewBag.Seats = GetFullSessionSeats();
+            return View(session);
+        }
+
+        public void CreateReservation()
+        {
+            StreamReader sr = new StreamReader(Request.Body);
+            UserReservation data = JsonSerializer.Deserialize<UserReservation>(sr.ReadToEnd());
+            foreach(int seatId in data.ReservedSeats)
+            {
+                Reservation res = new Reservation();
+                res.SeatId = seatId;
+                res.SessionId = data.Session;
+                res.PersonFirstName = data.FName;
+                res.PersonSecondName = data.SName;
+                _context.Reservation.Add(res);
+            }
+            _context.SaveChanges();
+        }
+
+        private Dictionary<int, List<SessionSeat>> GetFullSessionSeats()
+        {
+            List<SessionSeat> seatsList = new List<SessionSeat>();
+
+            foreach (Seat seat in _context.Seat.ToList())
             {
                 seatsList.Add(CreateSessionSeat(seat));
             }
 
-            seatsList = seatsList.OrderBy(x => x.Row).ThenBy(x => x.Number).ToList();
+            return GetFormatedSeatList(seatsList);
 
-            var resSeats = GetSeatsByRows(seatsList);
-
-            ViewBag.Movie = _context.Movie.SingleOrDefault(m => m.Id == session.MovieId);
-
-            ViewBag.Seats = resSeats;
-            return View();
         }
 
         private SessionSeat CreateSessionSeat(Seat seat)
         {
-            SessionSeat sessionSeat = new SessionSeat(seat);
-
-            Reservation reservation = _context.Reservation.SingleOrDefault(r => r.SeatId == seat.Id);
-
-            if (reservation != null)
-            {
-                sessionSeat.IsReserved = true;
-            }
-            else
-            {
-                sessionSeat.IsReserved = false;
-            }
+            SessionSeat sessionSeat = new SessionSeat(seat, session,_context);
 
             return sessionSeat;
+        }
+
+        private Dictionary<int, List<SessionSeat>> GetFormatedSeatList(List<SessionSeat> unformatted)
+        {
+            List<SessionSeat> listByRowsAndNumber = new List<SessionSeat>();
+
+            listByRowsAndNumber = unformatted.OrderBy(x => x.Row).ThenBy(x => x.Number).ToList();
+
+            var formattedList = GetSeatsByRows(listByRowsAndNumber);
+
+            return formattedList;
         }
 
         private Dictionary<int, List<SessionSeat>> GetSeatsByRows(List<SessionSeat> seatsList)
