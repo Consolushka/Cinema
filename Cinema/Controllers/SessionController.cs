@@ -36,6 +36,7 @@ namespace Cinema.Controllers
             }
 
             ViewBag.Movie = _context.Movie.SingleOrDefault(m => m.Id == session.MovieId);
+            ViewBag.Hall = _context.Hall.SingleOrDefault(h => h.Id == session.HallId);
             ViewBag.Seats = GetFullSessionSeats();
             return View(session);
         }

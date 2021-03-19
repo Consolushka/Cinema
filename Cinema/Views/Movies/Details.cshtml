@@ -1,0 +1,19 @@
+﻿@model Cinema.Models.Movie
+
+<section class="movie">
+    <img src="~/img/@Model.Poster" />
+    <h2>@Model.Title</h2>
+    <p>@Model.Genre</p>
+    <p>@Model.Rating</p>
+    <p>@Model.ReleaseDate</p>
+    <p>@Model.Director</p>
+    <p>@Model.Desc</p>
+    <ul>
+        @foreach (Session session in ViewBag.Sessions)
+        {
+            <li>
+                <a asp-controller="Session" asp-action="Index" asp-route-id="@session.Id">@session.ShowTime</a>
+            </li>
+        }
+    </ul>
+</section> 

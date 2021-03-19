@@ -1,9 +1,10 @@
 ﻿@model Cinema.Models.Session
 
-<h1>@ViewBag.Movie.Title</h1>
-
+<h1 class="js-movie">@ViewBag.Movie.Title</h1>
+<h2 class="js-hall">@ViewBag.Hall.Id</h2>
+<h2 class="js-date">@Model.ShowTime</h2>
 <form action="" method="post" id="resForm">
-    <input name="Session" value="@Model.Id" disabled />
+    <input class="js-session" name="Session" value="@Model.Id" disabled />
     @foreach (var key in ViewBag.Seats.Keys)
     {
         <h2>@key</h2>
@@ -29,6 +30,25 @@
         <input id="reserv" type="submit" value="Create" class="btn btn-primary" />
     </div>
 </form>
+
+<section class="popup js-popup js-popup--success">
+    <button type="button" class="popup-btn-close">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0.5 0.5L12.5 12.5M0.5 12.5L12.5 0.5" stroke="black" />
+        </svg>
+    </button>
+    <h3 class="popup-title">Выбранные места были успешно зарезервированы!</h3>
+    <p>Ожидаем вас, <span class="js-user-name"></span>, на фильме <span class="js-user-movie"></span> <span class="js-user-date"></span> в <span class="js-user-time"></span> на месте(местах) <span class="js-user-seats"></span></p>
+</section>
+
+<section class="popup js-popup js-popup--success">
+    <button type="button" class="popup-btn-close">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0.5 0.5L12.5 12.5M0.5 12.5L12.5 0.5" stroke="black" />
+        </svg>
+    </button>
+    <h3 class="popup-title">При бронировании произошла ошибка :(</h3>
+</section>
 
 <script src="~/js/reservation.js"></script>
 

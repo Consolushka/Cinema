@@ -9,7 +9,7 @@
         {
             <li>
                 <article>
-                    <a>
+                    <a asp-controller="Movies" asp-action="Details" asp-route-id="@item.Id">
                         <img src="~/img/@item.Poster" />
                         <h3>@item.Title</h3>
                         <ul>
