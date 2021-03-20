@@ -4,24 +4,26 @@
     ViewData["Title"] = "Index";
 }
 <section>
-    <ul>
+    <ul class="row" style="list-style: none">
         @foreach (var item in Model)
         {
-            <li>
-                <article>
+            <li class="col-sm-12 col-md-4 col-lg-3" style="margin-bottom: 20px;">
+                <article class="card p-0">
                     <a asp-controller="Movies" asp-action="Details" asp-route-id="@item.Id">
-                        <img src="~/img/@item.Poster" />
-                        <h3>@item.Title</h3>
-                        <ul>
-                            @foreach(Session session in ViewBag.Sessions[item.Id])
-                            {
-                                <li>
-                                    <a asp-controller="Session" asp-action="Index" asp-route-id="@session.Id">
-                                        @session.ShowTime
-                                    </a>
-                                </li>
-                            }
-                        </ul>
+                        <img src="~/img/@item.Poster" class="card-img-top"/>
+                        <div class="p-15">
+                            <h3 class="card-title">@item.Title</h3>
+                            <ul>
+                                @foreach (Session session in ViewBag.Sessions[item.Id])
+                                {
+                                    <li>
+                                        <a asp-controller="Session" asp-action="Index" asp-route-id="@session.Id">
+                                            @session.ShowTime
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
                     </a>
                 </article>
             </li>

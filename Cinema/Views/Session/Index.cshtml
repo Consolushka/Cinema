@@ -1,14 +1,14 @@
-﻿@model Cinema.Models.Session
+﻿@model Cinema.Models.UserSession
 
-<h1 class="js-movie">@ViewBag.Movie.Title</h1>
-<h2 class="js-hall">@ViewBag.Hall.Id</h2>
+<h1 class="js-movie">@Model.Movie.Title</h1>
+<h2 class="js-hall">@Model.Hall.Id</h2>
 <h2 class="js-date">@Model.ShowTime</h2>
 <form action="" method="post" id="resForm">
     <input class="js-session" name="Session" value="@Model.Id" disabled />
-    @foreach (var key in ViewBag.Seats.Keys)
+    @foreach (var key in @Model.sessionSeats.Keys)
     {
         <h2>@key</h2>
-        @foreach (SessionSeat seat in ViewBag.Seats[key])
+        @foreach (SessionSeat seat in @Model.sessionSeats[key])
         {
             if (seat.IsReserved)
             {
