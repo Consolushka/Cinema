@@ -4,13 +4,14 @@ let RESERVATION_BUTTON = document.querySelector("#reserv");
 let availableSeats = FORM.querySelectorAll(".js-available-seat");
 let reservationData;
 
-availableSeats.forEach((seat)=>{
-    seat.addEventListener("click", ()=>{
-        seat.toggleAttribute("checked");
-    })
+availableSeats.forEach((seat) => {
+    seat.addEventListener("click", () => {
+        seat.querySelector("input").toggleAttribute("checked");
+        seat.classList.toggle("seat--reserved");
+    });
 });
 
-RESERVATION_BUTTON.addEventListener("click", (e)=>{
+RESERVATION_BUTTON.addEventListener("click", (e) => {
     e.preventDefault();
     ReformatReservationData();
     console.log(reservationData);
@@ -25,31 +26,37 @@ RESERVATION_BUTTON.addEventListener("click", (e)=>{
     });
 });
 
-function ShowSuccessPopup(){
+document.querySelectorAll(".js-popup-close").forEach((btn) => {
+    btn.addEventListener("click", () => {
+        btn.parentNode.classList.remove("popup--showed");
+    })
+})
+
+function ShowSuccessPopup() {
     let successPopup = document.querySelector(".js-popup--success");
     successPopup.classList.add("popup--showed");
-    successPopup.querySelector(".js-user-name").textContent = reservationData.FName + reservationData.SName;
+    successPopup.querySelector(".js-user-name").textContent = reservationData.FName + " " + reservationData.SName;
     successPopup.querySelector(".js-user-movie").textContent = document.querySelector(".js-movie").textContent;
     let dateTime = document.querySelector(".js-date").textContent;
-    successPopup.querySelector(".js-user-date").textContent = dateTime.substring(0,dateTime.length-8);
-    successPopup.querySelector(".js-user-time").textContent = dateTime.substring(dateTime.length-8,dateTime.length);
-    reservationData.ReservedSeats.forEach((seat)=>{
-        successPopup.querySelector(".js-user-seats").textContent+=seat+" ";
+    successPopup.querySelector(".js-user-date").textContent = dateTime.substring(0, dateTime.length - 8);
+    successPopup.querySelector(".js-user-time").textContent = dateTime.substring(dateTime.length - 8, dateTime.length);
+    reservationData.ReservedSeats.forEach((seat) => {
+        successPopup.querySelector(".js-user-seats").textContent += seat + " ";
     });
 
 }
 
-function ReformatReservationData(){
+function ReformatReservationData() {
     let resultingData = {
         Session: Number(document.querySelector(".js-session").value),
         ReservedSeats: [],
         FName: '',
         SName: ''
     };
-    FORM.querySelectorAll(".js-available-seat").forEach((seat)=>{
-        if (seat.hasAttribute("checked")){
+    FORM.querySelectorAll(".js-available-seat").forEach((seat) => {
+        if (seat.classList.contains("seat--reserved")) {
             console.log(seat);
-            resultingData.ReservedSeats.push(Number(seat.dataset.seatnumber));
+            resultingData.ReservedSeats.push(Number(seat.querySelector("input").value));
         }
     });
     resultingData.FName = FORM.querySelector("#FirstName").value;

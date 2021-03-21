@@ -78,6 +78,7 @@ body {
     transform: translate(-50%,-50%);
     width: 25%;
     height: 200px;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     background-color: #979797;
@@ -101,4 +102,29 @@ body {
 .popup-title{
     font-size: 21px;
     font-weight: bold;
+}
+
+.visually-hidden {
+    position: absolute;
+    clip: rect(0 0 0 0);
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+}
+
+.seat {
+    width: fit-content;
+    text-align: center;
+}
+
+.seat svg path{
+    fill: #4e4d4d;
+}
+
+.seat--reserved svg path {
+    fill: #03d040;
+}
+
+.seat--unable svg path {
+    fill: #c70000;
 }
