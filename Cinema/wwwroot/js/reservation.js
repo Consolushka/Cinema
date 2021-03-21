@@ -26,6 +26,24 @@ RESERVATION_BUTTON.addEventListener("click", (e) => {
     });
 });
 
+function ReformatReservationData() {
+    let resultingData = {
+        Session: Number(document.querySelector(".js-session").value),
+        ReservedSeats: [],
+        FName: '',
+        SName: ''
+    };
+    FORM.querySelectorAll(".js-available-seat").forEach((seat) => {
+        if (seat.classList.contains("seat--reserved")) {
+            console.log(seat);
+            resultingData.ReservedSeats.push(Number(seat.querySelector("input").value));
+        }
+    });
+    resultingData.FName = FORM.querySelector("#FirstName").value;
+    resultingData.SName = FORM.querySelector("#SecondName").value;
+    reservationData = resultingData;
+}
+
 document.querySelectorAll(".js-popup-close").forEach((btn) => {
     btn.addEventListener("click", () => {
         btn.parentNode.classList.remove("popup--showed");
@@ -44,22 +62,4 @@ function ShowSuccessPopup() {
         successPopup.querySelector(".js-user-seats").textContent += seat + " ";
     });
 
-}
-
-function ReformatReservationData() {
-    let resultingData = {
-        Session: Number(document.querySelector(".js-session").value),
-        ReservedSeats: [],
-        FName: '',
-        SName: ''
-    };
-    FORM.querySelectorAll(".js-available-seat").forEach((seat) => {
-        if (seat.classList.contains("seat--reserved")) {
-            console.log(seat);
-            resultingData.ReservedSeats.push(Number(seat.querySelector("input").value));
-        }
-    });
-    resultingData.FName = FORM.querySelector("#FirstName").value;
-    resultingData.SName = FORM.querySelector("#SecondName").value;
-    reservationData = resultingData;
 }

@@ -128,3 +128,23 @@ body {
 .seat--unable svg path {
     fill: #c70000;
 }
+
+.user-data{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.user-data__info {
+    display: flex;
+    flex-direction: row;
+    width: 50%;
+    justify-content: flex-start;
+    margin-right: 20px;
+    align-content: center;
+}
+
+.user-data__info-input{
+    flex-grow: 1;
+}
