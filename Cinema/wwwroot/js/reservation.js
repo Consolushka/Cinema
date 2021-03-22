@@ -61,5 +61,4 @@ function ShowSuccessPopup() {
     reservationData.ReservedSeats.forEach((seat) => {
         successPopup.querySelector(".js-user-seats").textContent += seat + " ";
     });
-
 }

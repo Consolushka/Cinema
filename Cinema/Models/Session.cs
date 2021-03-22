@@ -14,5 +14,7 @@ namespace Cinema.Models
         public int HallId{ get; set; }
         public Hall Hall{ get; set; }
         public DateTime ShowTime { get; set; }
+
+        public double Price { get; set; }
     }
 }

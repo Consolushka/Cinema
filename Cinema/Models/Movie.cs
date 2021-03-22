@@ -14,7 +14,7 @@ namespace Cinema.Models
         public string Desc { get; set; }
         public string Director { get; set; }
         public string Poster { get; set;}
-        public string Rating { get; set;}
+        public double Rating { get; set;}
         [DataType(DataType.Date)]
         public DateTime ReleaseDate { get; set; }
     }

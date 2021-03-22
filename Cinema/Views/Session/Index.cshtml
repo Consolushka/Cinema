@@ -3,6 +3,7 @@
 <h1>Фильм - <span class="js-movie">@Model.Movie.Title</span></h1>
 <h2>Зал - <span class="js-hall">@Model.Hall.Id</span></h2>
 <h2>Время показа - <span class="js-date">@Model.ShowTime</span></h2>
+<h2>Цена одного билета - <b>@Model.Price</b> &#8381;</h2>
 <div style="width: 100%; height: 12px; background: #343434"></div>
 <form action="" method="post" id="resForm">
     <input class="js-session visually-hidden" name="Session" value="@Model.Id" disabled />

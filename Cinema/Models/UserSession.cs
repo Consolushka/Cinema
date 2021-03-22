@@ -20,6 +20,7 @@ namespace Cinema.Models
             HallId = session.HallId;
             MovieId = session.MovieId;
             ShowTime = session.ShowTime;
+            Price = session.Price;
             Hall = _context.Hall.SingleOrDefault(h => h.Id == HallId);
             Movie = _context.Movie.SingleOrDefault(m => m.Id == MovieId);
             sessionSeats = GetFullSessionSeats();
