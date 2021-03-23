@@ -26,13 +26,6 @@ namespace Cinema.Controllers
             return View(_context.Movie.ToList());
         }
 
-        // GET: MoviesController/Details/5
-        public ActionResult Details(int id)
-        {
-            ViewBag.Sessions = GetCurrentMovieSession(id);
-            return View(_context.Movie.FirstOrDefault(m=>m.Id==id));
-        }
-
         private Dictionary<int, List<Session>> GetSessionsByMovie()
         {
             Dictionary<int, List<Session>> resDict = new Dictionary<int, List<Session>>();
@@ -41,12 +34,19 @@ namespace Cinema.Controllers
                 resDict.Add(movie.Id, new List<Session>());
             }
 
-            foreach(Session session in _context.Session.ToList())
+            foreach (Session session in _context.Session.ToList())
             {
                 resDict[session.MovieId].Add(session);
             }
 
             return resDict;
+        }
+
+        // GET: MoviesController/Details/5
+        public ActionResult Details(int id)
+        {
+            ViewBag.Sessions = GetCurrentMovieSession(id);
+            return View(_context.Movie.FirstOrDefault(m=>m.Id==id));
         }
 
         private List<Session> GetCurrentMovieSession(int id)

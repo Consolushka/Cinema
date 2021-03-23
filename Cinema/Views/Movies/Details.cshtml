@@ -1,13 +1,24 @@
 ﻿@model Cinema.Models.Movie
 
+@{
+    ViewData["Title"] = "Подробнее о фильме" + Model.Title;
+    ViewData["Date"] = Model.ReleaseDate.Date;
+}
+
 <section class="movie">
-    <img src="~/img/@Model.Poster" />
-    <h2>@Model.Title</h2>
-    <p>@Model.Genre</p>
-    <p>@Model.Rating</p>
-    <p>@Model.ReleaseDate</p>
-    <p>@Model.Director</p>
+    <div class="movie__main">
+        <img class="movie__main-img" src="~/img/@Model.Poster" />
+        <div class="movie__main-info">
+            <h2>@Model.Title</h2>
+            <p>Жанр - @Model.Genre</p>
+            <p>Рейтинг - @Model.Rating</p>
+            <p>Дата выхода - @Model.ReleaseDate.ToString().Substring(0,Model.ReleaseDate.ToString().Length - 8)</p>
+            <p>Режиссер - @Model.Director</p>
+        </div>
+    </div>
+    <p style="font-size: 12px; margin-bottom: 5px;">Описание</p>
     <p>@Model.Desc</p>
+    <h3>Доступные сеансы</h3>
     <ul>
         @foreach (Session session in ViewBag.Sessions)
         {

@@ -1,23 +1,28 @@
 ﻿@model Cinema.Models.UserSession
 
+@{ 
+    ViewData["Title"] = "Сеанс кинофильма " + Model.Movie.Title;
+}
+
 <h1>Фильм - <span class="js-movie">@Model.Movie.Title</span></h1>
 <h2>Зал - <span class="js-hall">@Model.Hall.Id</span></h2>
 <h2>Время показа - <span class="js-date">@Model.ShowTime</span></h2>
 <h2>Цена одного билета - <b>@Model.Price</b> &#8381;</h2>
-<div style="width: 100%; height: 12px; background: #343434"></div>
+<div class="screen"></div>
 <form action="" method="post" id="resForm">
     <input class="js-session visually-hidden" name="Session" value="@Model.Id" disabled />
-    @foreach (var key in @Model.sessionSeats.Keys)
-    {
-        <div class="d-flex flex-row justify-content-between">
-            <p style="font-size: 14px; min-width: 40px;">@key ряд</p>
-            @foreach (SessionSeat seat in @Model.sessionSeats[key])
-            {
-                if (seat.IsReserved)
+    <div class="hall">
+        @foreach (var key in @Model.sessionSeats.Keys)
+        {
+            <div class="d-flex flex-row justify-content-between">
+                <p style="font-size: 14px; min-width: 40px;">@key ряд</p>
+                @foreach (SessionSeat seat in @Model.sessionSeats[key])
                 {
-                    <div class="seat seat--unable d-flex flex-column align-content-center">
-                        <svg version="1.1" x="0px" y="0px" height="20" width="25" viewBox="0 0 511.751 511.751" style="enable-background:new 0 0 511.751 511.751;" xml:space="preserve">
-                        <path d="M426.542,153.351c-18.914,0-35.449,10.311-44.314,25.6h-92.219v-41.546c32.417,1.602,64.921,5.425,97.391,11.485
+                    if (seat.IsReserved)
+                    {
+                        <div class="seat seat--unable d-flex flex-column align-content-center">
+                            <svg version="1.1" x="0px" y="0px" height="20" width="25" viewBox="0 0 511.751 511.751" style="enable-background:new 0 0 511.751 511.751;" xml:space="preserve">
+                            <path d="M426.542,153.351c-18.914,0-35.449,10.311-44.314,25.6h-92.219v-41.546c32.417,1.602,64.921,5.425,97.391,11.485
 			                c0.077,0.009,0.154,0.026,0.23,0.034c1.758,0.282,3.516,0.418,5.265,0.418c7.962,0,15.701-2.825,21.854-8.064
 			                c7.492-6.409,11.793-15.744,11.793-25.6V55.024c0-21.265-15.241-39.1-36.011-42.377C300.53-4.214,209.906-4.206,121.458,12.613
                 			c-21.001,3.311-36.25,21.146-36.25,42.411v60.655c0,9.856,4.301,19.191,11.793,25.6c7.492,6.4,17.365,9.199,27.383,7.603
@@ -38,15 +43,16 @@
 			                c0,18.825-15.309,34.133-34.133,34.133c-4.618,0-9.022-0.926-13.043-2.594c-0.347-0.185-0.711-0.34-1.084-0.477
 			                c-11.79-5.382-20.007-17.275-20.007-31.062v-179.2c0-4.628,0.93-9.042,2.605-13.07c0.176-0.332,0.325-0.679,0.457-1.035
 			                c5.378-11.802,17.276-20.028,31.071-20.028c18.825,0,34.133,15.309,34.133,34.133V383.751z" />
+
                     </svg>
-                        <span style="font-size: 10px; font-weight: 600">@seat.Number</span>
-                    </div>
-                }
-                else
-                {
-                    <div class="seat js-available-seat d-flex flex-column align-content-center">
-                        <svg version="1.1" x="0px" y="0px" height="20" width="25" viewBox="0 0 511.751 511.751" style="enable-background:new 0 0 511.751 511.751;" xml:space="preserve">
-                        <path d="M426.542,153.351c-18.914,0-35.449,10.311-44.314,25.6h-92.219v-41.546c32.417,1.602,64.921,5.425,97.391,11.485
+                            <span style="font-size: 10px; font-weight: 600">@seat.Number</span>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="seat js-available-seat d-flex flex-column align-content-center">
+                            <svg version="1.1" x="0px" y="0px" height="20" width="25" viewBox="0 0 511.751 511.751" style="enable-background:new 0 0 511.751 511.751;" xml:space="preserve">
+                            <path d="M426.542,153.351c-18.914,0-35.449,10.311-44.314,25.6h-92.219v-41.546c32.417,1.602,64.921,5.425,97.391,11.485
 			                c0.077,0.009,0.154,0.026,0.23,0.034c1.758,0.282,3.516,0.418,5.265,0.418c7.962,0,15.701-2.825,21.854-8.064
 			                c7.492-6.409,11.793-15.744,11.793-25.6V55.024c0-21.265-15.241-39.1-36.011-42.377C300.53-4.214,209.906-4.206,121.458,12.613
                 			c-21.001,3.311-36.25,21.146-36.25,42.411v60.655c0,9.856,4.301,19.191,11.793,25.6c7.492,6.4,17.365,9.199,27.383,7.603
@@ -67,14 +73,16 @@
 			                c0,18.825-15.309,34.133-34.133,34.133c-4.618,0-9.022-0.926-13.043-2.594c-0.347-0.185-0.711-0.34-1.084-0.477
 			                c-11.79-5.382-20.007-17.275-20.007-31.062v-179.2c0-4.628,0.93-9.042,2.605-13.07c0.176-0.332,0.325-0.679,0.457-1.035
 			                c5.378-11.802,17.276-20.028,31.071-20.028c18.825,0,34.133,15.309,34.133,34.133V383.751z" />
+
                     </svg>
-                        <input class="visually-hidden" type="checkbox" name="seats" value="@seat.Id" />
-                        <span style="font-size: 10px; font-weight: 600">@seat.Number</span>
-                    </div>
+                            <input class="visually-hidden" type="checkbox" name="seats" value="@seat.Id" />
+                            <span style="font-size: 10px; font-weight: 600">@seat.Number</span>
+                        </div>
+                    }
                 }
-            }
-        </div>
-    }
+            </div>
+        }
+    </div>
 <div class="user-data">
     <div class="user-data__info user-data__info--fname">
         <p>Ваше имя - </p>
@@ -86,7 +94,7 @@
     </div>
 </div>
     <div class="form-group">
-        <input id="reserv" type="submit" value="Create" class="btn btn-primary" />
+        <input id="reserv" type="submit" value="Забронировать" class="btn btn-primary" />
     </div>
 </form>
 
