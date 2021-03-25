@@ -6,6 +6,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Cinema.Data;
 using Cinema.Models;
+using System.Text.Json;
+using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Cinema.Controllers
 {
@@ -23,6 +26,11 @@ namespace Cinema.Controllers
         public IActionResult Index()
         {
             ViewBag.Sessions = GetSessionsByMovie();
+            ViewBag.AllowedDates = GetAllowedDates();
+
+            byte[] encodedBytes = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(_context.Movie.ToList()));
+            ViewBag.JsonMovies = Encoding.Convert(Encoding.UTF8, Encoding.Unicode, encodedBytes);
+
             return View(_context.Movie.ToList());
         }
 
@@ -40,6 +48,20 @@ namespace Cinema.Controllers
             }
 
             return resDict;
+        }
+
+        private List<DateTime> GetAllowedDates()
+        {
+            List<DateTime> resultingDates = new List<DateTime>();
+            foreach (Session session in _context.Session.ToList())
+            {
+                if (!resultingDates.Contains(session.ShowTime.Date))
+                {
+                    resultingDates.Add(session.ShowTime.Date);
+                }
+            }
+            resultingDates = resultingDates.OrderBy(d => d.Date).ToList();
+            return resultingDates;
         }
 
         // GET: MoviesController/Details/5
