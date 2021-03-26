@@ -50,18 +50,24 @@ namespace Cinema.Controllers
             return resDict;
         }
 
-        private List<DateTime> GetAllowedDates()
+        private List<string> GetAllowedDates()
         {
-            List<DateTime> resultingDates = new List<DateTime>();
+            List<DateTime> datesList = new List<DateTime>();
+            List<string> resultingList = new List<string>();
             foreach (Session session in _context.Session.ToList())
             {
-                if (!resultingDates.Contains(session.ShowTime.Date))
+                if (!datesList.Contains(session.ShowTime.Date))
                 {
-                    resultingDates.Add(session.ShowTime.Date);
+                    datesList.Add(session.ShowTime.Date);
                 }
             }
-            resultingDates = resultingDates.OrderBy(d => d.Date).ToList();
-            return resultingDates;
+            datesList = datesList.OrderBy(d => d.Date).ToList();
+            foreach (DateTime currentDate in datesList)
+            {
+                string date = currentDate.Day.ToString() + "." + currentDate.Month.ToString() + "." + currentDate.Year.ToString();
+                resultingList.Add(date);
+            }
+            return resultingList;
         }
 
         // GET: MoviesController/Details/5
