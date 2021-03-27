@@ -5,10 +5,10 @@ let dateField = document.querySelector(".js-searching-date");
 let timeField = document.querySelector(".js-searching-time");
 
 const DAY_TIME_DICT = {
-    morning: ["06:00:00", "07:00:00","08:00:00","09:00:00","10:00:00","11:00:00"],
-    day: ["12:00:00", "13:00:00","14:00:00","15:00:00","16:00:00","17:00:00"],
-    evening: ["18:00:00", "19:00:00","20:00:00","21:00:00","22:00:00","23:00:00"],
-    night: ["00:00:00", "01:00:00","02:00:00","03:00:00","04:00:00","05:00:00"]
+    morning: ["06:00:00", "07:00:00", "08:00:00", "09:00:00", "10:00:00", "11:00:00"],
+    day: ["12:00:00", "13:00:00", "14:00:00", "15:00:00", "16:00:00", "17:00:00"],
+    evening: ["18:00:00", "19:00:00", "20:00:00", "21:00:00", "22:00:00", "23:00:00"],
+    night: ["00:00:00", "01:00:00", "02:00:00", "03:00:00", "04:00:00", "05:00:00"]
 };
 
 function HideEl(el) {
@@ -35,7 +35,29 @@ class Session {
     }
 
     HideIfNotOnDateOrShow(date) {
-        if (this.date === date) {
+        if (this.IsOnDate(date)) {
+            ShowEl(this.element);
+        } else {
+            HideEl(this.element);
+        }
+    }
+
+    IsOnTimeRange(range) {
+        let flag = false;
+        for (let i = 0; i < range.length; i++) {
+            console.group();
+            console.log(range[i]);
+            console.log(this.time);
+            console.groupEnd();
+            if (range[i] === this.time) {
+                flag = true;
+            }
+        }
+        return flag;
+    }
+
+    HideIfNotOnTimeOrShow(range) {
+        if (this.IsOnTimeRange(range)) {
             ShowEl(this.element);
         } else {
             HideEl(this.element);
@@ -66,7 +88,7 @@ class Movie {
         for (let i = 0; i < this.sessions.length; i++) {
             if (this.sessions[i].IsOnDate(date)) {
                 ShowEl(this.element);
-                this.ShowSuitableSession(date);
+                this.ShowSuitableSessionByDate(date);
                 console.log("founded");
                 return;
             }
@@ -74,9 +96,27 @@ class Movie {
         HideEl(this.element);
     }
 
-    ShowSuitableSession(date) {
+    HideIfNoSuitableSessionsOrShowThemByTime(timeRange) {
+        for (let i = 0; i < this.sessions.length; i++) {
+            if (this.sessions[i].IsOnTimeRange(timeRange)) {
+                ShowEl(this.element);
+                this.ShowSuitableSessionByTime(timeRange);
+                console.log("founded");
+                return;
+            }
+        }
+        HideEl(this.element);
+    }
+
+    ShowSuitableSessionByDate(date) {
         this.sessions.forEach((session) => {
             session.HideIfNotOnDateOrShow(date);
+        })
+    }
+
+    ShowSuitableSessionByTime(range) {
+        this.sessions.forEach((session) => {
+            session.HideIfNotOnTimeOrShow(range);
         })
     }
 }
@@ -100,15 +140,26 @@ function FindSessionsByDate(e) {
 
     MOVIES.forEach((movie) => {
         let movieObj = new Movie(movie);
-        if (searchingDate !== "none"){
+        if (searchingDate !== "none") {
             movieObj.HideIfNoSuitableSessionsOrShowThemByDate(searchingDate);
-        }
-        else {
+        } else {
             ShowEl(movieObj.element);
         }
     });
 }
 
-function FindSessionsByTime(e){
+function FindSessionsByTime(e) {
+    let value = e.target.value;
 
+    MOVIES.forEach((movie) => {
+        let movieObj = new Movie(movie);
+        if (value !== "none") {
+            let searchingDayTime = DAY_TIME_DICT[value];
+            movieObj.HideIfNoSuitableSessionsOrShowThemByTime(searchingDayTime);
+        } else {
+            movieObj.sessions.forEach((session) => {
+                ShowEl(session.element);
+            })
+        }
+    });
 }

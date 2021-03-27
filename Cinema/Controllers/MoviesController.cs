@@ -45,6 +45,7 @@ namespace Cinema.Controllers
             foreach (Session session in _context.Session.ToList())
             {
                 resDict[session.MovieId].Add(session);
+                resDict[session.MovieId] = resDict[session.MovieId].OrderBy(s => s.ShowTime).ToList();
             }
 
             return resDict;

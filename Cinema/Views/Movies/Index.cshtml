@@ -9,7 +9,8 @@
             <input class="filters__name-input js-searching-name" />
         </div>
         <div class="filters__showtime">
-            <select class="filters__showtime-time">
+            <select class="filters__showtime-time js-searching-time">
+                <option value="none" selected></option>
                 <option value="morning">Утро</option>
                 <option value="day">День</option>
                 <option value="evening">Вечер</option>
@@ -43,20 +44,27 @@
                 <article class="card p-0">
                     <a asp-controller="Movies" asp-action="Details" asp-route-id="@item.Id">
                         <img src="~/img/@item.Poster" class="card-img-top" />
+                        </a>
                         <div class="p-15">
                             <h3 class="card-title">@item.Title</h3>
-                            <ul>
+                            <p>@item.Director</p>
+                            <p>@item.Rating</p>
+                            @{
+                                ViewBag.sessionHref = "#sessions" + item.Id;
+                                ViewBag.sessionId = "sessions" + item.Id;
+                            }
+                            <a data-toggle="collapse" href="@ViewBag.sessionHref" role="button" aria-expanded="false" aria-controls="sessions">Достпуные сеансы</a>
+                            <ul class="collapse multi-collapse" id="@ViewBag.sessionId">
                                 @foreach (Session session in ViewBag.Sessions[item.Id])
                                 {
-                                    <li class="js-session">
-                                        <a asp-controller="Session" asp-action="Index" asp-route-id="@session.Id">
-                                            <span class="js-session-date">@session.ShowTime.Day.@session.ShowTime.Month.@session.ShowTime.Year</span> <span class="js-session-time">@session.ShowTime.TimeOfDay</span>
-                                        </a>
-                                    </li>
+                                <li class="js-session">
+                                    <a asp-controller="Session" asp-action="Index" asp-route-id="@session.Id">
+                                        <span class="js-session-date">@session.ShowTime.Day.@session.ShowTime.Month.@session.ShowTime.Year</span> <span class="js-session-time">@session.ShowTime.TimeOfDay</span>
+                                    </a>
+                                </li>
                                 }
                             </ul>
                         </div>
-                    </a>
                 </article>
             </li>
         }
