@@ -183,3 +183,22 @@ body {
 .movie__main-img{
     margin-right: 40px;
 }
+
+.text-sec{
+    color: rgba(0,0,0,0.5);
+}
+
+.filters__option-title{
+    font-size: 18px;
+}
+
+.filters-wrapper{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.filters__reset{
+    height: fit-content;
+    align-self: flex-end;
+}

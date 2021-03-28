@@ -3,40 +3,40 @@
 @{
     ViewData["Title"] = "Доступные фильмы";
 }
-<article class="filters">
-    <form>
-        <div class="filters__name">
+<section class="filters">
+    <h2 class="text-sec">Фильтры</h2>
+    <form class="filters-wrapper">
+        <div class="filters__option filters__name">
+            <p class="filters__option-title text-sec">Поиск по названию фильма</p>
             <input class="filters__name-input js-searching-name" />
         </div>
-        <div class="filters__showtime">
-            <select class="filters__showtime-time js-searching-time">
-                <option value="none" selected></option>
-                <option value="morning">Утро</option>
-                <option value="day">День</option>
-                <option value="evening">Вечер</option>
-                <option value="night">Ночь</option>
-            </select>
-            <select class="filters__showtime-date js-searching-date">
-                <option value="none" selected></option>
-                @foreach (String dateTime in ViewBag.AllowedDates)
-                {
-                    <option value="@dateTime">@dateTime</option>
-                }
-            </select>
-        </div>
-        <button type="button" class="filters__search js-search">
-            <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M14.5 14.5L10.5 10.5M6.5 12.5C3.18629 12.5 0.5 9.81371 0.5 6.5C0.5 3.18629 3.18629 0.5 6.5 0.5C9.81371 0.5 12.5 3.18629 12.5 6.5C12.5 9.81371 9.81371 12.5 6.5 12.5Z" stroke="black" />
-            </svg>
-        </button>
-        <button type="button" class="filters__reset">
-            <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M4.5 3V1.5C4.5 0.947715 4.94772 0.5 5.5 0.5H9.5C10.0523 0.5 10.5 0.947715 10.5 1.5V3M0 3.5H15M1.5 3.5V13.5C1.5 14.0523 1.94772 14.5 2.5 14.5H12.5C13.0523 14.5 13.5 14.0523 13.5 13.5V3.5M7.5 7V12M4.5 9V12M10.5 9V12" stroke="black" />
-            </svg>
-        </button>
-    </form>
-</article>
+            <div class="filters__option">
+                <p class="filters__option-title text-sec">Поиск по времени показа</p>
+                <select class="filters__time js-searching-time">
+                    <option value="none" selected></option>
+                    <option value="morning">Утро</option>
+                    <option value="day">День</option>
+                    <option value="evening">Вечер</option>
+                    <option value="night">Ночь</option>
+                </select>
+            </div>
+            <div class="filters__option">
+                <p class="filters__option-title text-sec">Поиск по времени показа</p>
+                <select class="filters__date js-searching-date">
+                    <option value="none" selected></option>
+                    @foreach (String dateTime in ViewBag.AllowedDates)
+                    {
+                        <option value="@dateTime">@dateTime</option>
+                    }
+                </select>
+            </div>
+            <button type="reset" class="filters__reset js-filters-reset">
+                Очистить
+            </button>
+</form>
+</section>
 <section>
+    <h2 class="text-sec">Достпуные фильмы</h2>
     <ul class="row p-0" style="list-style: none">
         @foreach (var item in Model)
         {
