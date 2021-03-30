@@ -31,7 +31,7 @@ namespace Cinema
                 options.AllowSynchronousIO = true;
             });
             services.AddDbContext<MvcCinemaContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("MvcCinemaContext")));
+            options.UseNpgsql(Configuration.GetConnectionString("MvcCinemaCotnextPostgre")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
