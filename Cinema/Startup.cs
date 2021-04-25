@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Cinema.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Cinema
 {
@@ -37,6 +38,7 @@ namespace Cinema
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -60,6 +62,15 @@ namespace Cinema
                     name: "default",
                     pattern: "{controller=Movies}/{action=Index}");
             });
+        }
+
+        private IServiceCollection ConfigureLogging(IServiceCollection factory)
+        {
+            factory.AddLogging(opt =>
+            {
+                opt.AddConsole();
+            });
+            return factory;
         }
     }
 }
