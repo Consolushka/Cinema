@@ -18,13 +18,42 @@
     </div>
     <p style="font-size: 12px; margin-bottom: 5px;">Описание</p>
     <p>@Model.Desc</p>
-    <h3>Доступные сеансы</h3>
-    <ul>
-        @foreach (Session session in ViewBag.Sessions)
-        {
-            <li>
-                <a asp-controller="Session" asp-action="Index" asp-route-id="@session.Id">@session.ShowTime</a>
-            </li>
-        }
-    </ul>
+    <section><h3>Доступные сеансы</h3>
+                 <ul>
+                     @foreach (Session session in ViewBag.Sessions)
+                     {
+                         <li>
+                             <a asp-controller="Session" asp-action="Index" asp-route-id="@session.Id">@session.ShowTime</a>
+                         </li>
+                     }
+                 </ul>
+    </section>
+    <section class="movie-comment">
+        <h3>Комментарии</h3>
+        <div class="movie-comment__list">
+            <article class="comment">
+                <b class="comment-name">Иван пупкин</b>
+                <p>Замечательный фильм!</p>
+            </article>
+            <article class="comment">
+                <b>Иван пупкин</b>
+                <p>Замечательный фильм!</p>
+            </article>
+            <article class="comment">
+                <b>Иван пупкин</b>
+                <p>Замечательный фильм!</p>
+            </article>
+            <article class="comment">
+                <b>Иван пупкин</b>
+                <p>Замечательный фильм!</p>
+            </article>
+        </div>
+        <div class="movie-comment__new">
+            <p style="font-weight: bold">Добавить новый комментарий</p>
+            <form action="" method="post" id="addComment" class="movie-comment__new-form comment">
+                <input required type="text" name="personName" placeholder="Представтесь, пожалуйста" class="comment-name"/>
+                <textarea name="comment" required rows="3" placeholder="Введите комментарий к фильму"></textarea>
+            </form>
+        </div>
+    </section>
 </section> 
