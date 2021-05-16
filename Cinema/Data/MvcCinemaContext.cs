@@ -15,5 +15,6 @@ namespace Cinema.Data
         public DbSet<Seat> Seat{ get; set; }
         public DbSet<Session> Session{ get; set; }
         public DbSet<Reservation> Reservation{ get; set; }
+        public DbSet<Comment> Comment { get; set; }
     }
 }
