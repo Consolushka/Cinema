@@ -12,48 +12,51 @@
             <h2>@Model.Title</h2>
             <p>Жанр - @Model.Genre</p>
             <p>Рейтинг - @Model.Rating</p>
-            <p>Дата выхода - @Model.ReleaseDate.ToString().Substring(0,Model.ReleaseDate.ToString().Length - 8)</p>
+            <p>Дата выхода - @Model.ReleaseDate.ToString().Substring(0, Model.ReleaseDate.ToString().Length - 8)</p>
             <p>Режиссер - @Model.Director</p>
         </div>
     </div>
     <p style="font-size: 12px; margin-bottom: 5px;">Описание</p>
     <p>@Model.Desc</p>
-    <section><h3>Доступные сеансы</h3>
-                 <ul>
-                     @foreach (Session session in ViewBag.Sessions)
-                     {
-                         <li>
-                             <a asp-controller="Session" asp-action="Index" asp-route-id="@session.Id">@session.ShowTime</a>
-                         </li>
-                     }
-                 </ul>
+    <section>
+        <h3>Доступные сеансы</h3>
+        <ul>
+            @foreach (Session session in ViewBag.Sessions)
+            {
+                <li>
+                    <a asp-controller="Session" asp-action="Index" asp-route-id="@session.Id">@session.ShowTime</a>
+                </li>
+            }
+        </ul>
     </section>
     <section class="movie-comment">
         <h3>Комментарии</h3>
         <div class="movie-comment__list">
-            <article class="comment">
-                <b class="comment-name">Иван пупкин</b>
-                <p>Замечательный фильм!</p>
-            </article>
-            <article class="comment">
-                <b>Иван пупкин</b>
-                <p>Замечательный фильм!</p>
-            </article>
-            <article class="comment">
-                <b>Иван пупкин</b>
-                <p>Замечательный фильм!</p>
-            </article>
-            <article class="comment">
-                <b>Иван пупкин</b>
-                <p>Замечательный фильм!</p>
-            </article>
+            @foreach (Comment comm in ViewBag.Comments)
+            {
+                <article class="comment">
+                    <p style="font-weight: bold" class="comment-name">@comm.PersonName</p>
+                    <p class="comment-text">@comm.Text</p>
+                </article>
+            }
         </div>
         <div class="movie-comment__new">
             <p style="font-weight: bold">Добавить новый комментарий</p>
             <form action="" method="post" id="addComment" class="movie-comment__new-form comment">
-                <input required type="text" name="personName" placeholder="Представтесь, пожалуйста" class="comment-name"/>
-                <textarea name="comment" required rows="3" placeholder="Введите комментарий к фильму"></textarea>
+                <input type="hidden" name="movieId" value="@Model.Id" class="movie-comment__new-id"/>
+                <input required type="text" name="personName" placeholder="Представтесь, пожалуйста" class="comment-name movie-comment__new-person" />
+                <textarea name="comment" required rows="3" placeholder="Введите комментарий к фильму" class="movie-comment__new-text"></textarea>
+                <button type="submit" class="movie-comment__new-btn btn btn-primary">Отправить комментарий</button>
             </form>
         </div>
     </section>
-</section> 
+
+    <template id="commTempl">
+            <article class="comment">
+                <p style="font-weight: bold" class="comment-name"></p>
+                <p class="comment-text"></p>
+            </article>
+    </template>
+</section>
+
+<script src="~/js/postComment.js"></script>
