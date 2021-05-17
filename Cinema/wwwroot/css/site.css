@@ -202,3 +202,17 @@ body {
     height: fit-content;
     align-self: flex-end;
 }
+
+.comment{
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+    border: 1px solid #1b1e21;
+    border-radius: 5px;
+    margin-bottom: 12px;
+}
+
+.comment-name{
+    width: 40%;
+    margin-bottom: 30px;
+}

@@ -9,6 +9,9 @@ using Cinema.Models;
 using System.Text.Json;
 using System.Text;
 using System.Text.Json.Serialization;
+using System.IO;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace Cinema.Controllers
 {
@@ -71,10 +74,19 @@ namespace Cinema.Controllers
             return resultingList;
         }
 
+        public void AddComment()
+        {
+            StreamReader sr = new StreamReader(Request.Body);
+            Comment comment = JsonSerializer.Deserialize<Comment>(sr.ReadToEnd());
+            _context.Comment.Add(comment);
+            _context.SaveChanges();
+        }
+
         // GET: MoviesController/Details/5
         public ActionResult Details(int id)
         {
             ViewBag.Sessions = GetCurrentMovieSession(id);
+            ViewBag.Comments = GetCurrentMovieComments(id);
             return View(_context.Movie.FirstOrDefault(m=>m.Id==id));
         }
 
@@ -87,6 +99,20 @@ namespace Cinema.Controllers
                 if (session.MovieId == currMovie.Id)
                 {
                     resDict.Add(session);
+                }
+            }
+            return resDict;
+        }
+
+        private List<Comment> GetCurrentMovieComments(int id)
+        {
+            List<Comment> resDict = new List<Comment>();
+            Movie currMovie = _context.Movie.FirstOrDefault(f => f.Id == id);
+            foreach (Comment comment in _context.Comment.ToList())
+            {
+                if (comment.MovieId == currMovie.Id)
+                {
+                    resDict.Add(comment);
                 }
             }
             return resDict;
